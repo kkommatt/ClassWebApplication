@@ -1,13 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 namespace ClassWebApplication.Models
 {
     public class ApplicationDbContext : DbContext
     {
-        public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<Lector> Lectors { get; set; }
-        public virtual DbSet<StudentCourse> StudentCourses { get; set; }
-        public virtual DbSet<LectorCourse> LectorCourses { get; set; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Lector> Lectors { get; set; }
+        public DbSet<StudentCourse> StudentCourses { get; set; }
+        public DbSet<LectorCourse> LectorCourses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,10 +45,7 @@ namespace ClassWebApplication.Models
             base.OnModelCreating(modelBuilder);
         }
         
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            Database.EnsureCreated();
-        }
+
     }
 
 }
