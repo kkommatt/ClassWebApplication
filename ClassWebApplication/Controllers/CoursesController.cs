@@ -35,11 +35,11 @@ namespace ClassWebApplication.Controllers
             }
 
             var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
+                        .Include(c => c.StudentCourses)
+                        .ThenInclude(sc => sc.Student)
+                        .Include(c => c.LectorCourses)
+                        .ThenInclude(lc => lc.Lector)
+                        .FirstOrDefaultAsync(m => m.Id == id);
 
             return View(course);
         }
@@ -140,17 +140,27 @@ namespace ClassWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Courses == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Courses'  is null.");
-            }
             var course = await _context.Courses.FindAsync(id);
-            if (course != null)
+
+            if (course == null)
             {
-                _context.Courses.Remove(course);
+                return NotFound();
             }
-            
+
+            var studentCourses = await _context.StudentCourses
+                .Where(sc => sc.CourseId == id)
+                .ToListAsync();
+            if (studentCourses != null)
+                _context.StudentCourses.RemoveRange(studentCourses);
+
+            var lectorCourses = await _context.LectorCourses
+                .Where(lc => lc.CourseId == id)
+                .ToListAsync();
+            if (lectorCourses != null)
+                _context.LectorCourses.RemoveRange(lectorCourses);
+            _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

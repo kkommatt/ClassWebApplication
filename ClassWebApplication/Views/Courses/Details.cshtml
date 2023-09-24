@@ -1,13 +1,13 @@
 ﻿@model ClassWebApplication.Models.Course
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Деталі";
 }
 
-<h1>Details</h1>
+<h1>Деталі</h1>
 
 <div>
-    <h4>Course</h4>
+    <h4>Курсу</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -29,8 +29,23 @@
             @Html.DisplayFor(model => model.MaterialLink)
         </dd>
     </dl>
+    <h3>Студенти курсу</h3>
+    <ul>
+    @foreach (var studentCourse in Model.StudentCourses)
+    {
+        <li>@studentCourse.Student.FullName - @studentCourse.Student.Email</li>
+    }
+    </ul>
+
+    <h3>Лектори курсу</h3>
+    <ul>
+    @foreach (var lectorCourse in Model.LectorCourses)
+    {
+        <li>@lectorCourse.Lector.FullName - @lectorCourse.Lector.Email</li>
+    }
+    </ul>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Змінити</a> |
+    <a asp-action="Index">Повернутися</a>
 </div>
