@@ -29,13 +29,16 @@ namespace ClassWebApplication.Controllers
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Students == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var student = await _context.Students
+                .Include(s => s.StudentCourses)
+                .ThenInclude(sc => sc.Course) 
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (student == null)
             {
                 return NotFound();
@@ -44,9 +47,11 @@ namespace ClassWebApplication.Controllers
             return View(student);
         }
 
+
         // GET: Students/Create
         public IActionResult Create()
         {
+            ViewBag.Course = _context.Courses.ToList();
             return View();
         }
 
@@ -55,16 +60,24 @@ namespace ClassWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,Email")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,FullName,Email,StudentCourses")] Student student, List<int> StudentCourses)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                if (StudentCourses != null && StudentCourses.Any())
+                {
+                    student.StudentCourses = StudentCourses.Select(courseId => new StudentCourse { CourseId = courseId }).ToList();
+                }
+
+                _context.Students.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Course = await _context.Courses.ToListAsync();
             return View(student);
         }
+
 
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -79,6 +92,7 @@ namespace ClassWebApplication.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Courses = _context.Courses.ToList();
             return View(student);
         }
 
@@ -87,7 +101,7 @@ namespace ClassWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Email")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Email,StudentCourses")] Student student, List<int> StudentCourses)
         {
             if (id != student.Id)
             {
@@ -98,6 +112,10 @@ namespace ClassWebApplication.Controllers
             {
                 try
                 {
+                    if (StudentCourses != null && StudentCourses.Any())
+                    {
+                        student.StudentCourses = StudentCourses.Select(courseId => new StudentCourse { CourseId = courseId }).ToList();
+                    }
                     _context.Update(student);
                     await _context.SaveChangesAsync();
                 }

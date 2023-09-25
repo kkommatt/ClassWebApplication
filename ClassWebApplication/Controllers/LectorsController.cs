@@ -35,6 +35,8 @@ namespace ClassWebApplication.Controllers
             }
 
             var lector = await _context.Lectors
+                .Include(l => l.LectorCourses)
+                .ThenInclude(lc => lc.Course)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (lector == null)
             {

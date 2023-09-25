@@ -1,5 +1,5 @@
 ﻿@model ClassWebApplication.Models.Course
-
+@using System.Linq
 @{
     ViewData["Title"] = "Додати";
 }
@@ -26,6 +26,13 @@
                 <label asp-for="MaterialLink" class="control-label"></label>
                 <input asp-for="MaterialLink" class="form-control" />
                 <span asp-validation-for="MaterialLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LectorCourses" class="control-label">Лектори</label>
+                <select asp-for="LectorCourses" asp-items="@(new SelectList(ViewBag.Lectors, "Id", "FullName"))" class="form-control" multiple>
+                    <option disabled selected>-- Виберіть лектора --</option>
+                </select>
+                <span asp-validation-for="LectorCourses" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Додати" class="btn btn-primary" />

@@ -34,8 +34,11 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaterialLink)
+                <a href="@item.MaterialLink" target="_blank">
+                    <img src="https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/page-file-icon.png" alt="File Icon" style="max-width: 50px; max-height: 50px;">
+                </a>
             </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Змінити</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |

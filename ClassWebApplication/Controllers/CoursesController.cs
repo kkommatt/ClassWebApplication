@@ -47,6 +47,7 @@ namespace ClassWebApplication.Controllers
         // GET: Courses/Create
         public IActionResult Create()
         {
+            ViewBag.Lectors = _context.Lectors.ToList();
             return View();
         }
 
@@ -55,14 +56,21 @@ namespace ClassWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,MaterialLink")] Course course)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,MaterialLink,LectorCourses")] Course course, List<int> LectorCourses)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(course);
+                if (LectorCourses != null && LectorCourses.Any())
+                {
+                    course.LectorCourses = LectorCourses.Select(lectorId => new LectorCourse { LectorId = lectorId }).ToList();
+                }
+
+                _context.Courses.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Lectors = await _context.Lectors.ToListAsync();
             return View(course);
         }
 
@@ -79,6 +87,7 @@ namespace ClassWebApplication.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Lectors = _context.Lectors.ToList();
             return View(course);
         }
 
@@ -87,7 +96,7 @@ namespace ClassWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,MaterialLink")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,MaterialLink,LectorCourses")] Course course, List<int> LectorCourses)
         {
             if (id != course.Id)
             {
@@ -98,6 +107,10 @@ namespace ClassWebApplication.Controllers
             {
                 try
                 {
+                    if (LectorCourses != null && LectorCourses.Any())
+                    {
+                        course.LectorCourses = LectorCourses.Select(lectorId => new LectorCourse { LectorId = lectorId }).ToList();
+                    }
                     _context.Update(course);
                     await _context.SaveChangesAsync();
                 }
