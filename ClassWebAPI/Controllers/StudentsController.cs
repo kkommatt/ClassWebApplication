@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using ClassWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ClassWebAPI.Models;
 
 namespace ClassWebAPI.Controllers
 {
@@ -28,23 +23,31 @@ namespace ClassWebAPI.Controllers
           {
               return NotFound();
           }
-            return await _context.Students.ToListAsync();
+            return await _context.Students.Include(s => s.StudentCourses).ToListAsync();
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
-          if (_context.Students == null)
-          {
-              return NotFound();
-          }
-            var student = await _context.Students.FindAsync(id);
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Students
+                .Include(s => s.StudentCourses)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if (student == null)
             {
                 return NotFound();
             }
+            var studentCourses = await _context.StudentCourses
+                .Where(sc => sc.StudentId == student.Id)
+                .ToListAsync();
+
+            student.StudentCourses = studentCourses;
 
             return student;
         }
@@ -52,14 +55,42 @@ namespace ClassWebAPI.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        public async Task<ActionResult<Student>> PutStudent(int id, Student student)
         {
             if (id != student.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(student).State = EntityState.Modified;
+            var existingStudent = await _context.Students
+            .Include(s => s.StudentCourses)
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (existingStudent == null)
+            {
+                return NotFound();
+            }
+            var courseIds = new List<int>();
+            foreach (var studentCourse in student.StudentCourses)
+            {
+                courseIds.Add(studentCourse.CourseId);
+            }
+            _context.StudentCourses.RemoveRange(existingStudent.StudentCourses);
+            student.StudentCourses = null;
+            existingStudent.FullName = student.FullName;
+            existingStudent.Email = student.Email;
+            existingStudent.StudentCourses.Clear();
+            foreach (var courseId in courseIds)
+            {
+                var studentCourse = new StudentCourse
+                {
+                    StudentId = existingStudent.Id,
+                    CourseId = courseId,
+                    Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
+                    Student = await _context.Students.Where(s => s.Id == existingStudent.Id).FirstOrDefaultAsync()
+                };
+                existingStudent.StudentCourses.Add(studentCourse);
+            }
 
             try
             {
@@ -77,7 +108,7 @@ namespace ClassWebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return existingStudent;
         }
 
         // POST: api/Students
@@ -89,7 +120,24 @@ namespace ClassWebAPI.Controllers
           {
               return Problem("Entity set 'ApplicationDbContext.Students'  is null.");
           }
+            var courseIds = student.StudentCourses.Select(s => s.CourseId).ToList();
+            student.StudentCourses = null;
             _context.Students.Add(student);
+            await _context.SaveChangesAsync();  
+            var studentId = student.Id;
+
+            foreach (var courseId in courseIds)
+            {
+                var studentCourse = new StudentCourse()
+                {
+                    StudentId = studentId,
+                    CourseId = courseId,
+                    Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
+                    Student = await _context.Students.Where(s => s.Id == studentId).FirstOrDefaultAsync()
+                };
+                _context.StudentCourses.Add(studentCourse);
+            }
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetStudent", new { id = student.Id }, student);
@@ -108,7 +156,6 @@ namespace ClassWebAPI.Controllers
             {
                 return NotFound();
             }
-
             _context.Students.Remove(student);
             await _context.SaveChangesAsync();
 

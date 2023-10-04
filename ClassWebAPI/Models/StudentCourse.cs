@@ -1,11 +1,15 @@
-﻿namespace ClassWebAPI.Models
+﻿using System.Text.Json.Serialization;
+
+namespace ClassWebAPI.Models
 {
     public class StudentCourse
     {
         public int StudentId { get; set; }
-        public Student Student { get; set; }
+        [JsonIgnore]
+        public Student Student { get; set; } = new Student();
 
         public int CourseId { get; set; }
-        public Course Course { get; set; }
+        [JsonIgnore]
+        public Course Course { get; set; } = new Course();
     }
 }
