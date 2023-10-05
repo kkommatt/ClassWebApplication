@@ -61,54 +61,60 @@ namespace ClassWebAPI.Controllers
             {
                 return BadRequest();
             }
-
-            var existingStudent = await _context.Students
-            .Include(s => s.StudentCourses)
-            .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (existingStudent == null)
-            {
-                return NotFound();
-            }
-            var courseIds = new List<int>();
-            foreach (var studentCourse in student.StudentCourses)
-            {
-                courseIds.Add(studentCourse.CourseId);
-            }
-            _context.StudentCourses.RemoveRange(existingStudent.StudentCourses);
-            student.StudentCourses = null;
-            existingStudent.FullName = student.FullName;
-            existingStudent.Email = student.Email;
-            existingStudent.StudentCourses.Clear();
-            foreach (var courseId in courseIds)
-            {
-                var studentCourse = new StudentCourse
-                {
-                    StudentId = existingStudent.Id,
-                    CourseId = courseId,
-                    Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
-                    Student = await _context.Students.Where(s => s.Id == existingStudent.Id).FirstOrDefaultAsync()
-                };
-                existingStudent.StudentCourses.Add(studentCourse);
-            }
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(id))
+                var existingStudent = await _context.Students
+                .Include(s => s.StudentCourses)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+                if (existingStudent == null)
                 {
                     return NotFound();
                 }
-                else
+                var courseIds = new List<int>();
+                foreach (var studentCourse in student.StudentCourses)
                 {
-                    throw;
+                    courseIds.Add(studentCourse.CourseId);
                 }
-            }
+                _context.StudentCourses.RemoveRange(existingStudent.StudentCourses);
+                student.StudentCourses = null;
+                existingStudent.FullName = student.FullName;
+                existingStudent.Email = student.Email;
+                existingStudent.StudentCourses.Clear();
+                foreach (var courseId in courseIds)
+                {
+                    var studentCourse = new StudentCourse
+                    {
+                        StudentId = existingStudent.Id,
+                        CourseId = courseId,
+                        Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
+                        Student = await _context.Students.Where(s => s.Id == existingStudent.Id).FirstOrDefaultAsync()
+                    };
+                    existingStudent.StudentCourses.Add(studentCourse);
+                }
 
-            return existingStudent;
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StudentExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return Ok(existingStudent);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         // POST: api/Students
@@ -120,27 +126,34 @@ namespace ClassWebAPI.Controllers
           {
               return Problem("Entity set 'ApplicationDbContext.Students'  is null.");
           }
-            var courseIds = student.StudentCourses.Select(s => s.CourseId).ToList();
-            student.StudentCourses = null;
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();  
-            var studentId = student.Id;
-
-            foreach (var courseId in courseIds)
+            try
             {
-                var studentCourse = new StudentCourse()
+                var courseIds = student.StudentCourses.Select(s => s.CourseId).ToList();
+                student.StudentCourses = null;
+                _context.Students.Add(student);
+                await _context.SaveChangesAsync();
+                var studentId = student.Id;
+
+                foreach (var courseId in courseIds)
                 {
-                    StudentId = studentId,
-                    CourseId = courseId,
-                    Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
-                    Student = await _context.Students.Where(s => s.Id == studentId).FirstOrDefaultAsync()
-                };
-                _context.StudentCourses.Add(studentCourse);
+                    var studentCourse = new StudentCourse()
+                    {
+                        StudentId = studentId,
+                        CourseId = courseId,
+                        Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
+                        Student = await _context.Students.Where(s => s.Id == studentId).FirstOrDefaultAsync()
+                    };
+                    _context.StudentCourses.Add(studentCourse);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetStudent", new { id = student.Id }, student);
             }
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         // DELETE: api/Students/5

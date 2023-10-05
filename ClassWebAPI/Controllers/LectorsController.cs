@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using ClassWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ClassWebAPI.Models;
 
 namespace ClassWebAPI.Controllers
 {
@@ -24,10 +19,10 @@ namespace ClassWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lector>>> GetLectors()
         {
-          if (_context.Lectors == null)
-          {
-              return NotFound();
-          }
+            if (_context.Lectors == null)
+            {
+                return NotFound();
+            }
             return await _context.Lectors.Include(l => l.LectorCourses).ToListAsync();
         }
 
@@ -35,10 +30,10 @@ namespace ClassWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Lector>> GetLector(int id)
         {
-          if (_context.Lectors == null)
-          {
-              return NotFound();
-          }
+            if (_context.Lectors == null)
+            {
+                return NotFound();
+            }
             var lector = await _context.Lectors
     .Include(l => l.LectorCourses)
     .FirstOrDefaultAsync(l => l.Id == id);
@@ -74,78 +69,92 @@ namespace ClassWebAPI.Controllers
             {
                 return NotFound();
             }
-            var courseIds = new List<int>();
-            foreach (var lectorCourse in lector.LectorCourses)
-            {
-                courseIds.Add(lectorCourse.CourseId);
-            }
-            _context.LectorCourses.RemoveRange(existingLector.LectorCourses);
-            lector.LectorCourses = null;
-            existingLector.FullName = lector.FullName;
-            existingLector.Email = lector.Email;
-            existingLector.University = lector.University;
-            existingLector.LectorCourses.Clear();
-            foreach (var courseId in courseIds)
-            {
-                var lectorCourse = new LectorCourse
-                {
-                    LectorId = existingLector.Id,
-                    CourseId = courseId,
-                    Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
-                    Lector = await _context.Lectors.Where(l => l.Id == existingLector.Id).FirstOrDefaultAsync()
-                };
-                existingLector.LectorCourses.Add(lectorCourse);
-            }
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LectorExists(id))
+                var courseIds = new List<int>();
+                foreach (var lectorCourse in lector.LectorCourses)
                 {
-                    return NotFound();
+                    courseIds.Add(lectorCourse.CourseId);
                 }
-                else
+                _context.LectorCourses.RemoveRange(existingLector.LectorCourses);
+                lector.LectorCourses = null;
+                existingLector.FullName = lector.FullName;
+                existingLector.Email = lector.Email;
+                existingLector.University = lector.University;
+                existingLector.LectorCourses.Clear();
+                foreach (var courseId in courseIds)
                 {
-                    throw;
+                    var lectorCourse = new LectorCourse
+                    {
+                        LectorId = existingLector.Id,
+                        CourseId = courseId,
+                        Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
+                        Lector = await _context.Lectors.Where(l => l.Id == existingLector.Id).FirstOrDefaultAsync()
+                    };
+                    existingLector.LectorCourses.Add(lectorCourse);
                 }
-            }
 
-            return existingLector;
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LectorExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return Ok(existingLector);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
-    
+
 
         // POST: api/Lectors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Lector>> PostLector(Lector lector)
         {
-          if (_context.Lectors == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Lectors'  is null.");
-          }
-            var courseIds = lector.LectorCourses.Select(l => l.CourseId).ToList();
-            lector.LectorCourses = null;
-            _context.Lectors.Add(lector);
-            await _context.SaveChangesAsync();  
-            var lectorId = lector.Id;
-            foreach (var courseId in courseIds)
+            if (_context.Lectors == null)
             {
-                var lectorCourse = new LectorCourse()
-                {
-                    LectorId = lectorId,
-                    CourseId = courseId,
-                    Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
-                    Lector = await _context.Lectors.Where(l => l.Id == lectorId).FirstOrDefaultAsync()
-                };
-                _context.LectorCourses.Add(lectorCourse);
+                return Problem("Entity set 'ApplicationDbContext.Lectors'  is null.");
             }
+            try
+            {
+                var courseIds = lector.LectorCourses.Select(l => l.CourseId).ToList();
+                lector.LectorCourses = null;
+                _context.Lectors.Add(lector);
+                await _context.SaveChangesAsync();
+                var lectorId = lector.Id;
+                foreach (var courseId in courseIds)
+                {
+                    var lectorCourse = new LectorCourse()
+                    {
+                        LectorId = lectorId,
+                        CourseId = courseId,
+                        Course = await _context.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync(),
+                        Lector = await _context.Lectors.Where(l => l.Id == lectorId).FirstOrDefaultAsync()
+                    };
+                    _context.LectorCourses.Add(lectorCourse);
+                }
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLector", new { id = lector.Id }, lector);
+                return CreatedAtAction("GetLector", new { id = lector.Id }, lector);
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex);
+            }
         }
 
         // DELETE: api/Lectors/5
