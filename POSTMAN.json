@@ -1,0 +1,875 @@
+{
+	"info": {
+		"_postman_id": "7fae5996-91de-45a2-bb22-76af4c4584a0",
+		"name": "CourseWebAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30294888"
+	},
+	"item": [
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "get_courses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has status code 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has JSON body with expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    responseBody.forEach(item => {\r",
+									"        pm.expect(typeof item.id).to.eql('number');\r",
+									"        pm.expect(typeof item.title).to.eql('string');\r",
+									"        pm.expect(typeof item.description).to.eql('string');\r",
+									"        pm.expect(typeof item.materialLink).to.eql('string');\r",
+									"        pm.expect(item.studentCourses).to.be.an('array');\r",
+									"        pm.expect(item.lectorCourses).to.be.an('array');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response headers have content-type application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Courses",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response body has the expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody).to.have.property(\"title\");\r",
+									"    pm.expect(responseBody).to.have.property(\"description\");\r",
+									"    pm.expect(responseBody).to.have.property(\"materialLink\");\r",
+									"    pm.expect(responseBody).to.have.property(\"studentCourses\");\r",
+									"    pm.expect(responseBody).to.have.property(\"lectorCourses\");\r",
+									"    pm.expect(responseBody.studentCourses).to.be.an(\"array\");\r",
+									"    pm.expect(responseBody.lectorCourses).to.be.an(\"array\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"title\": \"Your title\",\r\n  \"description\": \"your description\",\r\n  \"materialLink\": \"https://localhost:44378/swagger/index.html\",\r\n  \"studentCourses\": [\r\n    {\r\n      \"studentId\": 1,\r\n      \"courseId\": 0\r\n    }\r\n  ],\r\n  \"lectorCourses\": [\r\n    {\r\n      \"lectorId\": 1,\r\n      \"courseId\": 0\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44378/api/Courses",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response body has the expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody).to.have.property(\"id\");\r",
+									"    pm.expect(responseBody).to.have.property(\"title\");\r",
+									"    pm.expect(responseBody).to.have.property(\"description\");\r",
+									"    pm.expect(responseBody).to.have.property(\"materialLink\");\r",
+									"    pm.expect(responseBody).to.have.property(\"studentCourses\");\r",
+									"    pm.expect(responseBody).to.have.property(\"lectorCourses\");\r",
+									"    pm.expect(responseBody.studentCourses).to.be.an(\"array\");\r",
+									"    pm.expect(responseBody.lectorCourses).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response headers\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Courses/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response body has the expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody).to.eql({\r",
+									"        \"id\": 15,\r",
+									"        \"title\": \"string\",\r",
+									"        \"description\": \"string\",\r",
+									"        \"materialLink\": \"https://localhost:44378/swagger/index.html\",\r",
+									"        \"studentCourses\": [\r",
+									"            {\r",
+									"                \"studentId\": 1,\r",
+									"                \"courseId\": 15\r",
+									"            }\r",
+									"        ],\r",
+									"        \"lectorCourses\": [\r",
+									"            {\r",
+									"                \"lectorId\": 1,\r",
+									"                \"courseId\": 15\r",
+									"            }\r",
+									"        ]\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response headers\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 15,\r\n  \"title\": \"string\",\r\n  \"description\": \"string\",\r\n  \"materialLink\": \"https://localhost:44378/swagger/index.html\",\r\n  \"studentCourses\": [\r\n    {\r\n      \"studentId\": 1,\r\n      \"courseId\": 15\r\n    }\r\n  ],\r\n  \"lectorCourses\": [\r\n    {\r\n      \"lectorId\": 1,\r\n      \"courseId\": 15\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44378/api/Courses/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 204 No Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has no content\", function () {\r",
+									"    pm.response.to.not.have.body();\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Courses/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "17"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lectors",
+			"item": [
+				{
+					"name": "get_lectors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has a JSON body\", function () {\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody).to.be.an(\"array\").that.is.not.empty;\r",
+									"    pm.expect(responseBody[0]).to.have.property(\"id\");\r",
+									"    pm.expect(responseBody[0]).to.have.property(\"fullName\");\r",
+									"    pm.expect(responseBody[0]).to.have.property(\"email\");\r",
+									"    pm.expect(responseBody[0]).to.have.property(\"university\");\r",
+									"    pm.expect(responseBody[0]).to.have.property(\"lectorCourses\").that.is.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response headers\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Lectors",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Lectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_lector",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has a JSON body\", function () {\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody).to.have.property(\"id\");\r",
+									"    pm.expect(responseBody).to.have.property(\"fullName\", \"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"email\", \"user@example.com\");\r",
+									"    pm.expect(responseBody).to.have.property(\"university\", \"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"lectorCourses\").that.is.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"fullName\": \"string\",\r\n  \"email\": \"user@example.com\",\r\n  \"university\": \"string\",\r\n  \"lectorCourses\": [\r\n    {\r\n      \"lectorId\": 0,\r\n      \"courseId\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44378/api/Lectors",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Lectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_lector",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has a JSON body\", function () {\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody).to.have.property(\"id\", 1);\r",
+									"    pm.expect(responseBody).to.have.property(\"fullName\", \"Іванов Іван Іванович\");\r",
+									"    pm.expect(responseBody).to.have.property(\"email\", \"ivanov@gmail.com\");\r",
+									"    pm.expect(responseBody).to.have.property(\"university\", \"КНУ імені Тараса Шевченка\");\r",
+									"    pm.expect(responseBody).to.have.property(\"lectorCourses\").that.is.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Lectors/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Lectors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_lector",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has a JSON body\", function () {\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody).to.have.property(\"id\", 9);\r",
+									"    pm.expect(responseBody).to.have.property(\"fullName\", \"Fullname\");\r",
+									"    pm.expect(responseBody).to.have.property(\"email\", \"user@example.com\");\r",
+									"    pm.expect(responseBody).to.have.property(\"university\", \"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"lectorCourses\").that.is.an(\"array\").that.is.not.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 9,\r\n  \"fullName\": \"Fullname\",\r\n  \"email\": \"user@example.com\",\r\n  \"university\": \"string\",\r\n  \"lectorCourses\": [\r\n    {\r\n      \"lectorId\": 9,\r\n      \"courseId\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44378/api/Lectors/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Lectors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_lector",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 204 No Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has no body\", function () {\r",
+									"    pm.response.to.not.have.body();\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Lectors/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Lectors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "get_student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has a 200 status code\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is an array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each item in the response has the expected structure\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    responseBody.forEach(function (item) {\r",
+									"        pm.expect(item).to.have.property(\"id\");\r",
+									"        pm.expect(item).to.have.property(\"fullName\");\r",
+									"        pm.expect(item).to.have.property(\"email\");\r",
+									"        pm.expect(item).to.have.property(\"studentCourses\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Students",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has a 201 status code\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is valid\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody).to.have.property(\"id\");\r",
+									"    pm.expect(responseBody.id).to.be.a(\"number\");\r",
+									"    pm.expect(responseBody).to.have.property(\"fullName\");\r",
+									"    pm.expect(responseBody.fullName).to.be.a(\"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"email\");\r",
+									"    pm.expect(responseBody.email).to.be.a(\"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"studentCourses\");\r",
+									"    pm.expect(responseBody.studentCourses).to.be.an(\"array\");\r",
+									"    pm.expect(responseBody.studentCourses.length).to.be.greaterThan(0);\r",
+									"    pm.expect(responseBody.studentCourses[0]).to.have.property(\"studentId\");\r",
+									"    pm.expect(responseBody.studentCourses[0].studentId).to.be.a(\"number\");\r",
+									"    pm.expect(responseBody.studentCourses[0]).to.have.property(\"courseId\");\r",
+									"    pm.expect(responseBody.studentCourses[0].courseId).to.be.a(\"number\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"fullName\": \"string\",\r\n  \"email\": \"user@example.com\",\r\n  \"studentCourses\": [\r\n    {\r\n      \"studentId\": 0,\r\n      \"courseId\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44378/api/Students",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has a 200 status code\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is valid\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody).to.have.property(\"id\");\r",
+									"    pm.expect(responseBody.id).to.be.a(\"number\");\r",
+									"    pm.expect(responseBody).to.have.property(\"fullName\");\r",
+									"    pm.expect(responseBody.fullName).to.be.a(\"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"email\");\r",
+									"    pm.expect(responseBody.email).to.be.a(\"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"studentCourses\");\r",
+									"    pm.expect(responseBody.studentCourses).to.be.an(\"array\");\r",
+									"    pm.expect(responseBody.studentCourses.length).to.be.greaterThan(0);\r",
+									"    pm.expect(responseBody.studentCourses[0]).to.have.property(\"studentId\");\r",
+									"    pm.expect(responseBody.studentCourses[0].studentId).to.be.a(\"number\");\r",
+									"    pm.expect(responseBody.studentCourses[0]).to.have.property(\"courseId\");\r",
+									"    pm.expect(responseBody.studentCourses[0].courseId).to.be.a(\"number\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Students/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has a 200 status code\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is valid\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody).to.have.property(\"id\");\r",
+									"    pm.expect(responseBody.id).to.be.a(\"number\");\r",
+									"    pm.expect(responseBody).to.have.property(\"fullName\");\r",
+									"    pm.expect(responseBody.fullName).to.be.a(\"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"email\");\r",
+									"    pm.expect(responseBody.email).to.be.a(\"string\");\r",
+									"    pm.expect(responseBody).to.have.property(\"studentCourses\");\r",
+									"    pm.expect(responseBody.studentCourses).to.be.an(\"array\");\r",
+									"    pm.expect(responseBody.studentCourses.length).to.be.greaterThan(0);\r",
+									"    pm.expect(responseBody.studentCourses[0]).to.have.property(\"studentId\");\r",
+									"    pm.expect(responseBody.studentCourses[0].studentId).to.be.a(\"number\");\r",
+									"    pm.expect(responseBody.studentCourses[0]).to.have.property(\"courseId\");\r",
+									"    pm.expect(responseBody.studentCourses[0].courseId).to.be.a(\"number\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 13,\r\n  \"fullName\": \"Fullname\",\r\n  \"email\": \"user@example.com\",\r\n  \"studentCourses\": [\r\n    {\r\n      \"studentId\": 13,\r\n      \"courseId\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44378/api/Students/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "13"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response status code is 204 No Content\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify response has no body\", function () {\r",
+									"    pm.response.to.not.have.body();\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44378/api/Students/:id",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44378",
+							"path": [
+								"api",
+								"Students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "14"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
