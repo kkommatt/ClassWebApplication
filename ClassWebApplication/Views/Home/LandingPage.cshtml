@@ -1,0 +1,631 @@
+﻿@model IEnumerable<ClassWebApplication.Models.Course>
+
+@{
+    ViewData["Title"] = "Головна";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Курси KNUCourses</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/img/favicon.png" rel="icon">
+    <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: Bootslander
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/bootslander-free-bootstrap-landing-page-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <div class="logo">
+                <h1><a asp-controller="Home" asp-action="Index"><span>KNUCourses</span></a></h1>
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto active" href="#hero">Головна</a></li>
+                    <li><a class="nav-link scrollto" href="#about">Про</a></li>
+                    <li><a class="nav-link scrollto" href="#features">Можливості</a></li>
+                    <li><a class="nav-link scrollto" href="#gallery">Галерея курсів</a></li>
+                    <li><a class="nav-link scrollto" href="#pricing">Ціни</a></li>
+                    <li class="dropdown">
+                        <a href="#"><span>Розгорнути</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a asp-controller="Courses" asp-action="Index">Курси</a></li>
+                            <li><a asp-controller="Lectors" asp-action="Index">Лектори</a></li>
+                            <li><a asp-controller="Students" asp-action="Index">Студенти</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="nav-link scrollto" href="#contact">Контакти</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+    </header><!-- End Header -->
+    <!-- ======= Hero Section ======= -->
+    <section id="hero">
+
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
+                    <div data-aos="zoom-out">
+                        <h1>Отримуй нові навчики з <span>KNUCourses</span></h1>
+                        <h2>Ресурс для якісного навчання</h2>
+                        <div class="text-center text-lg-start">
+                            <a href="#about" class="btn-get-started scrollto">Розпочати</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="300">
+                    <img src="~/img/course.png" class="img-fluid animated" alt="">
+                </div>
+            </div>
+        </div>
+
+        <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
+            <defs>
+                <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
+            </defs>
+            <g class="wave1">
+                <use xlink:href="#wave-path" x="50" y="3" fill="rgba(255,255,255, .1)">
+            </g>
+            <g class="wave2">
+                <use xlink:href="#wave-path" x="50" y="0" fill="rgba(255,255,255, .2)">
+            </g>
+            <g class="wave3">
+                <use xlink:href="#wave-path" x="50" y="9" fill="#fff">
+            </g>
+        </svg>
+
+    </section><!-- End Hero -->
+
+    <main id="main">
+
+        <!-- ======= About Section ======= -->
+        <section id="about" class="about">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-md-4" data-aos="fade-right">
+                        <img src="~/img/about1.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5" data-aos="fade-left">
+                        <h3>Система курсів від провідного навчального закладу України - КНУ імені Тараса Шевченка</h3>
+                        <p>Даний веб-сайт створений з метою покращення якості освіти України. Створений у вересні 2023 року, працює 24 години на добу та 7 днів на тиждень</p>
+
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="icon"><i class="bx bx-fingerprint"></i></div>
+                            <h4 class="title">Якісна освіта</h4>
+                            <p class="description">Курси пропонують матеріали, які створені викладачами найкращого університету країни</p>
+                        </div>
+
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
+                            <div class="icon"><i class="bx bx-gift"></i></div>
+                            <h4 class="title">Розвиток багатьох навичок</h4>
+                            <p class="description">В сучасному світі величезну роль відіграють навчання протягом життя</p>
+                        </div>
+
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="icon"><i class="bx bx-atom"></i></div>
+                            <h4 class="title">Широка застосованість</h4>
+                            <p class="description">Знання, отримані на курсах, знайдуть призначеннь будь-де та будь-коли</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End About Section -->
+        <!-- ======= Features Section ======= -->
+        <section id="features" class="features">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Можливості</h2>
+                    <p>Перегляньте можливості</p>
+                </div>
+
+                <div class="row" data-aos="fade-left">
+                    <div class="col-lg-3 col-md-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
+                            <i class="ri-store-line" style="color: #ffbb2c;"></i>
+                            <h3>Безліч курсів</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
+                            <i class="ri-bar-chart-box-line" style="color: #5578ff;"></i>
+                            <h3>Розвиток</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="150">
+                            <i class="ri-calendar-todo-line" style="color: #e80368;"></i>
+                            <h3>Терміни</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="200">
+                            <i class="ri-paint-brush-line" style="color: #e361ff;"></i>
+                            <h3>Красивий дизайн</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="250">
+                            <i class="ri-database-2-line" style="color: #47aeff;"></i>
+                            <h3>Величезна база</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
+                            <i class="ri-gradienter-line" style="color: #ffa76e;"></i>
+                            <h3>Цілі</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="350">
+                            <i class="ri-file-list-3-line" style="color: #11dbcf;"></i>
+                            <h3>Структурованість</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="400">
+                            <i class="ri-price-tag-2-line" style="color: #4233ff;"></i>
+                            <h3>Дистанційно</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="450">
+                            <i class="ri-anchor-line" style="color: #b2904f;"></i>
+                            <h3>Впевненість</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="500">
+                            <i class="ri-disc-line" style="color: #b20969;"></i>
+                            <h3>Інтереси</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="550">
+                            <i class="ri-base-station-line" style="color: #ff5828;"></i>
+                            <h3>Зв'язок</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 mt-4">
+                        <div class="icon-box" data-aos="zoom-in" data-aos-delay="600">
+                            <i class="ri-fingerprint-line" style="color: #29cc61;"></i>
+                            <h3>Чуттєвість</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End Features Section -->
+        <!-- ======= Counts Section ======= -->
+        <section id="counts" class="counts">
+            <div class="container">
+
+                <div class="row" data-aos="fade-up">
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="count-box">
+                            <i class="bi bi-emoji-smile"></i>
+                            <span data-purecounter-start="0" data-purecounter-end="1000" data-purecounter-duration="1" class="purecounter"></span>
+                            <p>Слухачів</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+                        <div class="count-box">
+                            <i class="bi bi-journal-richtext"></i>
+                            <span data-purecounter-start="0" data-purecounter-end="21" data-purecounter-duration="1" class="purecounter"></span>
+                            <p>Курсів</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+                        <div class="count-box">
+                            <i class="bi bi-headset"></i>
+                            <span data-purecounter-start="0" data-purecounter-end="1463" data-purecounter-duration="1" class="purecounter"></span>
+                            <p>Годин зв'язку</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+                        <div class="count-box">
+                            <i class="bi bi-people"></i>
+                            <span data-purecounter-start="0" data-purecounter-end="20" data-purecounter-duration="1" class="purecounter"></span>
+                            <p>Лекторів</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Counts Section -->
+        <!-- ======= Details Section ======= -->
+        <section id="details" class="details">
+            <div class="container">
+
+                <div class="row content">
+                    <div class="col-md-4" data-aos="fade-right">
+                        <img src="~/img/details-1.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-md-8 pt-4" data-aos="fade-up">
+                        <h3>Європейська якість та українські традиції.</h3>
+                        <p class="fst-italic">
+                            Якісні навички дорожче за будь-що
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check"></i> Якісні знання</li>
+                            <li><i class="bi bi-check"></i> Навчання через практику</li>
+                            <li><i class="bi bi-check"></i> Дистанційна форма</li>
+                            <li><i class="bi bi-check"></i> Навчання дорослих та освіта протягом життя</li>
+                        </ul>
+                        <p>
+                            Досвід, що здобудете тут, завжди знайде застосування
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row content">
+                    <div class="col-md-4 order-1 order-md-2" data-aos="fade-left">
+                        <img src="~/img/details-2.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-md-8 pt-5 order-2 order-md-1" data-aos="fade-up">
+                        <h3>Безліч переваг</h3>
+                        <p class="fst-italic">
+                            Перевага наших курсів та їх плюси полягають у тому, що ми дбаємо про ваш успіх та професійний зріст. Наші програми надають можливість розширити ваші навички та знання в сфері програмування, маркетингу, дизайну тощо. Це дозволяє вам бути впевненими в собі та конкурентоспроможними в сучасному світі.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row content">
+                    <div class="col-md-4" data-aos="fade-right">
+                        <img src="~/img/details-3.png" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-md-8 pt-5" data-aos="fade-up">
+                        <h3>Навчайся, поки маєш можливість</h3>
+                        <p>Приєднуйтесь до наших курсів та рухайтесь до успіху разом з нами!</p>
+                        <ul>
+                            <li><i class="bi bi-check"></i> Професійне наставництво: Ви матимете можливість вивчати від кращих в своїй галузі та отримувати цінні поради та керівництво.</li>
+                            <li><i class="bi bi-check"></i> Практичний підхід: Ми прагнемо до надання практичних навичок, які допоможуть вам застосовувати отримані знання в реальних проектах.</li>
+                            <li><i class="bi bi-check"></i> Гнучкий розклад: Наші курси розроблені з урахуванням вашого гнучкого розкладу, щоб вони відповідали вашим потребам та можливостям.</li>
+                        </ul>
+                        <p>
+                            Сертифікація: Після успішного завершення курсу ви отримаєте сертифікат, що підтверджує ваші навички та знання.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End Details Section -->
+        <!-- ======= Gallery Section ======= -->
+        <section id="gallery" class="gallery">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Галерея курсів</h2>
+                    <p>Подивись на курси</p>
+                </div>
+
+                <div class="row g-0" data-aos="fade-left">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h5>@Html.DisplayNameFor(model => model.Title)</h5>
+                                </th>
+                                <th>
+                                    <h5>@Html.DisplayNameFor(model => model.Description)</h5>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </section><!-- End Gallery Section -->
+        <!-- ======= Testimonials Section ======= -->
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+
+                <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="swiper-wrapper">
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <img src="~/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                                <h3>Saul Goodman</h3>
+                                <h4>Ceo &amp; Founder</h4>
+                                <p>
+                                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                    Курс був просто неймовірний! Я отримав багато корисної інформації та навичок, які допомогли мені в моїй кар'єрі. Рекомендую всім!
+                                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                </p>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <img src="~/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                                <h3>Sara Wilsson</h3>
+                                <h4>Designer</h4>
+                                <p>
+                                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                    Цей курс просто чудовий. Викладачі були дуже професійні та завжди готові допомогти. Я вчуся тут уже не перший місяць і планую продовжувати!
+                                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                </p>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <img src="~/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                                <h3>Jena Karlis</h3>
+                                <h4>Store Owner</h4>
+                                <p>
+                                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                    Дуже задоволений якістю навчання на цьому курсі. Все було роз'яснено дуже зрозуміло та доступно. Рекомендую для всіх, хто хоче розширити свої знання та навички.
+                                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                </p>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <img src="~/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                                <h3>Matt Brandon</h3>
+                                <h4>Freelancer</h4>
+                                <p>
+                                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                    Матеріал курсу був цікавим та корисним. Викладачі професійні, завжди готові допомогти та відповісти на усі питання. Рекомендую цей курс!
+                                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                </p>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <img src="~/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                                <h3>John Larson</h3>
+                                <h4>Entrepreneur</h4>
+                                <p>
+                                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                    Дуже співвідношення ціни та якості. Отримав багато нових знань та вражень. Обов'язково оберу ще один курс для навчання
+                                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                </p>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+
+            </div>
+        </section><!-- End Testimonials Section -->
+        
+        <!-- ======= Pricing Section ======= -->
+        <section id="pricing" class="pricing">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Ціни</h2>
+                    <p>Переглянь наші ціни</p>
+                </div>
+
+                <div class="row" data-aos="fade-left">
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="box" data-aos="zoom-in" data-aos-delay="100">
+                            <h3>Безкоштовно</h3>
+                            <h4><sup>₴</sup>0<span> / рік</span></h4>
+                            <ul>
+                                <li>Навчальні матеріали</li>
+                                <li>Список питань</li>
+                                <li class="na">Конференції</li>
+                                <li class="na">Консультації</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
+                        <div class="box featured" data-aos="zoom-in" data-aos-delay="200">
+                            <h3>Преміум</h3>
+                            <h4><sup>₴</sup>1000<span> / рік</span></h4>
+                            <ul>
+                                <li>Навчальні матеріали</li>
+                                <li>Список питань</li>
+                                <li>Конференції</li>
+                                <li>Консультації</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Pricing Section -->
+        <!-- ======= F.A.Q Section ======= -->
+        <section id="faq" class="faq section-bg">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+                    <h2>F.A.Q</h2>
+                    <p>Часті питання</p>
+                </div>
+
+                <div class="faq-list">
+                    <ul>
+                        <li data-aos="fade-up">
+                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-1">Які курси доступні у вашому навчальному закладі? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                            <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
+                                <p>
+                                    Ми пропонуємо широкий спектр курсів у різних галузях, таких як програмування, маркетинг, дизайн, управління проектами та багато інших. Для отримання повного списку доступних курсів, перейдіть на наш веб-сайт у розділ "Курси".
+                                </p>
+                            </div>
+                        </li>
+
+                        <li data-aos="fade-up" data-aos-delay="100">
+                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">Чи є в нас можливість отримати сертифікат після завершення курсу? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                            <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
+                                <p>
+                                    Так, після успішного завершення курсу ви отримаєте офіційний сертифікат в КНУ імені Шевченка, який підтверджує вашу участь та успішне завершення курсу.
+                                </p>
+                            </div>
+                        </li>
+
+                        <li data-aos="fade-up" data-aos-delay="200">
+                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">Які вимоги до участі в курсах? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                            <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
+                                <p>
+                                    Більшість наших курсів доступні для всіх, хто має бажання вивчати та покращувати свої навички. Однак деякі спеціалізовані курси можуть вимагати певного рівня підготовки.
+                                </p>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </section><!-- End F.A.Q Section -->
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="contact">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Контакти</h2>
+                    <p>Зв'яжіться з нами</p>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4" data-aos="fade-right" data-aos-delay="100">
+                        <div class="info">
+                            <div class="address">
+                                <i class="bi bi-geo-alt"></i>
+                                <h4>Розташування:</h4>
+                                <p>Україна, місто Київ, вулиця Володимирська, 60</p>
+                            </div>
+
+                            <div class="email">
+                                <i class="bi bi-envelope"></i>
+                                <h4>Електронна пошта:</h4>
+                                <p>info@example.com</p>
+                            </div>
+
+                            <div class="phone">
+                                <i class="bi bi-phone"></i>
+                                <h4>Телефон:</h4>
+                                <p>+1 2345 234 1</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Contact Section -->
+
+    </main><!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                        <div class="footer-info">
+                            <h3>KNUCourses</h3>
+                            <p class="pb-3"><em>Отримуй нові навики з нашими курсами.</em></p>
+                            <p>
+                                вулиця Володимирська,60 <br>
+                                місто Київ, Україна<br><br>
+                                <strong>Телефон:</strong> +1 234 567 89<br>
+                                <strong>Електронна адреса:</strong> info@example.com<br>
+                            </p>
+                            <div class="social-links mt-3">
+                                <a href="www.example.com" class="twitter"><i class="bx bxl-twitter"></i></a>
+                                <a href="www.example.com" class="facebook"><i class="bx bxl-facebook"></i></a>
+                                <a href="www.example.com" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                <a href="www.example.com" class="google-plus"><i class="bx bxl-skype"></i></a>
+                                <a href="www.example.com" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                &copy; <strong><span>KNUCourses</span></strong>. Всі права захищені
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="~/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/vendor/aos/aos.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="~/js/main.js"></script>
+
+</body>
+
+</html>

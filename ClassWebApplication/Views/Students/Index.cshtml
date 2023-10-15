@@ -3,20 +3,75 @@
 @{
     ViewData["Title"] = "Студенти";
 }
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-<h1>Студенти</h1>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-<p>
-    <a asp-action="Create">Додати</a>
-</p>
+    <!-- Vendor CSS Files -->
+    <link href="~/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+    <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <div class="logo">
+                <h1><a asp-controller="Home" asp-action="Index"><span>KNUCourses</span></a></h1>
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto" asp-controller="Home" asp-action="Index">Головна</a></li>
+                    <li><a class="nav-link scrollto" asp-controller="Courses" asp-action="Index">Курси</a></li>
+                    <li><a class="nav-link scrollto" asp-controller="Lectors" asp-action="Index">Лектори</a></li>
+                    <li><a class="nav-link scrollto active" asp-controller="Students" asp-action="Index">Студенти</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+
+        </div>
+    </header>
+    <main id="main">
+        <section id="hero">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
+                        <div data-aos="zoom-out">
+                            <h1>Студенти</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <p>
+                <a asp-action="Create">Додати</a>
+            </p>
+        </div>
+        <section id="counts" class="counts">
+            <div class="container">
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                                <h5>@Html.DisplayNameFor(model => model.FullName)</h5>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                                <h5>@Html.DisplayNameFor(model => model.Email)</h5>
             </th>
             <th></th>
         </tr>
@@ -39,3 +94,51 @@
 }
     </tbody>
 </table>
+            </div>
+        </section>
+    </main>
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="footer-info">
+                        <h3>KNUCourses</h3>
+                        <p>
+                            <strong>Телефон:</strong> +1 234 567 89<br>
+                            <strong>Електронна адреса:</strong> info@example.com<br>
+                        </p>
+                        <div class="social-links mt-3">
+                            <a href="www.example.com" class="twitter"><i class="bx bxl-twitter"></i></a>
+                            <a href="www.example.com" class="facebook"><i class="bx bxl-facebook"></i></a>
+                            <a href="www.example.com" class="instagram"><i class="bx bxl-instagram"></i></a>
+                            <a href="www.example.com" class="google-plus"><i class="bx bxl-skype"></i></a>
+                            <a href="www.example.com" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                &copy; <strong><span>KNUCourses</span></strong>. Всі права захищені
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="~/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/vendor/aos/aos.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="~/js/main.js"></script>
+</body>
