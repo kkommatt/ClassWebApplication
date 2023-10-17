@@ -17,13 +17,28 @@ namespace ClassWebAPI.Controllers
 
         // GET: api/Lectors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lector>>> GetLectors()
+        public async Task<ActionResult<IEnumerable<Lector>>> GetLectors(int skip = 0, int limit = 5)
         {
             if (_context.Lectors == null)
             {
                 return NotFound();
             }
-            return await _context.Lectors.Include(l => l.LectorCourses).ToListAsync();
+            try
+            {
+                var lectors = await _context.Lectors.Include(l => l.LectorCourses).Skip(skip).Take(limit).ToListAsync();
+                var next = await _context.Lectors.Include(l => l.LectorCourses).Skip(skip + limit).AnyAsync();
+                string nextLink = null;
+                if (next)
+                {
+                    nextLink = $"https://localhost:44378/api/lectors/?skip={skip + limit}&limit={limit}";
+                }
+                var gettedLectors = new DataForGet<Lector>(lectors, nextLink);
+                return Ok(gettedLectors);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         // GET: api/Lectors/5

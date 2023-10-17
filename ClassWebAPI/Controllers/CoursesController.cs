@@ -17,19 +17,41 @@ namespace ClassWebAPI.Controllers
 
         // GET: api/Courses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<Course>>> GetCourses(int skip = 0, int limit = 5)
         {
             if (_context.Courses == null)
             {
                 return NotFound();
             }
-            return await _context.Courses
-               .Include(course => course.StudentCourses)
-               .ThenInclude(studentCourse => studentCourse.Student)
-               .Include(course => course.LectorCourses)
-               .ThenInclude(lectorCourse => lectorCourse.Lector)
-               .ToListAsync();
-
+            try
+            {
+                var courses = await _context.Courses
+                   .Include(course => course.StudentCourses)
+                   .ThenInclude(studentCourse => studentCourse.Student)
+                   .Include(course => course.LectorCourses)
+                   .ThenInclude(lectorCourse => lectorCourse.Lector)
+                   .Skip(skip)
+                   .Take(limit)
+                   .ToListAsync();
+                var next = await _context.Courses
+                   .Include(course => course.StudentCourses)
+                   .ThenInclude(studentCourse => studentCourse.Student)
+                   .Include(course => course.LectorCourses)
+                   .ThenInclude(lectorCourse => lectorCourse.Lector)
+                   .Skip(skip + limit)
+                   .AnyAsync();
+                string nextLink = null ;
+                if (next)
+                {
+                    nextLink = $"https://localhost:44378/api/courses/?skip={skip + limit}&limit={limit}";
+                }
+                var gettedCourses = new DataForGet<Course>(courses, nextLink);
+                return Ok(gettedCourses);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
         }
         // GET: api/Courses/5
         [HttpGet("{id}")]

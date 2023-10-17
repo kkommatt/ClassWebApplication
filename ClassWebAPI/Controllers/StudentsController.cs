@@ -17,13 +17,28 @@ namespace ClassWebAPI.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudents(int skip = 0, int limit = 5)
         {
           if (_context.Students == null)
           {
               return NotFound();
           }
-            return await _context.Students.Include(s => s.StudentCourses).ToListAsync();
+            try 
+            { 
+                var students = await _context.Students.Include(s => s.StudentCourses).Skip(skip).Take(limit).ToListAsync();
+                var next = await _context.Students.Include(s => s.StudentCourses).Skip(skip + limit).AnyAsync();
+                string nextLink = null;
+                if (next)
+                {
+                    nextLink = $"https://localhost:44378/api/students/?skip={skip + limit}&limit={limit}";
+                }
+                var gettedStudents = new DataForGet<Student>(students, nextLink);
+                return Ok(gettedStudents);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         // GET: api/Students/5
