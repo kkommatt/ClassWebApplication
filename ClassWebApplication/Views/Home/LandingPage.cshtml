@@ -570,12 +570,45 @@
                                 <p>+1 2345 234 1</p>
                             </div>
 
+                            <!--<div id="map">
+                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDj1kLZupiXuoeOX6hVbOLsJz8d_5OAnd0&callback=console.debug&libraries=maps,marker&v=beta" async defer>
+                                </script>
+                                <style>
+                                gmp-map {
+                                height: 100%;
+                                }
+                                </style>
+                                <gmp-map center="50.44202423095703,30.511154174804688" zoom="14" map-id="DEMO_MAP_ID">
+                                    <gmp-advanced-marker position="50.44202423095703,30.511154174804688" title="My location">
+                                    </gmp-advanced-marker>
+                                </gmp-map>
+                            </div> -->
+                            <div>
+                            <fieldset>
+                            <div id="googleMap" style="height:400px;width:100%;"></div>
+                            <script>
+                                function myMap() {
+                                    var myCenter = new google.maps.LatLng(50.44202423095703, 30.511154174804688);
+                                    var mapProp = {
+                                        center: myCenter,
+                                        zoom: 12,
+                                        scrollwheel: false,
+                                        draggable: true,
+                                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                                    };
+                                    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+                                    var marker = new google.maps.Marker({
+                                        position: myCenter,
+                                        map: map 
+                                    });
+                                }
+                            </script>
+                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDj1kLZupiXuoeOX6hVbOLsJz8d_5OAnd0&callback=myMap"></script>
+                            </fieldset>
+                            </div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
         </section><!-- End Contact Section -->
 
