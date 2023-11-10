@@ -374,6 +374,81 @@
 
                 </div>
 
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Візуалізація статистики</h2>
+                </div>
+
+                <div class="row g-0" data-aos="fade-left">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <canvas id="popularityChart" width="400" height="400"></canvas>
+                    <script>
+                        var coursesData = [
+                        { label: "Курс 1", value: 30 },
+                        { label: "Курс 2", value: 45 },
+                        { label: "Курс 3", value: 25 },
+                        ];
+                        var ctx = document.getElementById('popularityChart').getContext('2d');
+
+                        var popularityChart = new Chart(ctx, {
+                            type: 'doughnut', 
+                            data: {
+                                labels: coursesData.map(course => course.label),
+                                datasets: [{
+                                    data: coursesData.map(course => course.value),
+                                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56',],
+                                }],
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Популярність курсів серед студентів',
+                                },
+                            },
+                        });
+                    </script>
+                </div>
+
+                <div class="row g-0" data-aos="fade-left">
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <canvas id="lecturerRatingChart" width="400" height="200"></canvas>
+                    <script>
+                        var lecturersData = [
+                            { lecturer: "Лектор 1", coursesCount: 10 },
+                            { lecturer: "Лектор 2", coursesCount: 8 },
+                            { lecturer: "Лектор 3", coursesCount: 12 },
+                        ];
+
+                        var ctx = document.getElementById('lecturerRatingChart').getContext('2d');
+
+                        var lecturerRatingChart = new Chart(ctx, {
+                            type: 'horizontalBar', 
+                            data: {
+                                labels: lecturersData.map(lecturer => lecturer.lecturer),
+                                datasets: [{
+                                    label: 'Кількість курсів',
+                                    data: lecturersData.map(lecturer => lecturer.coursesCount),
+                                    backgroundColor: 'rgba(75, 192, 192, 0.7)', 
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1,
+                                }],
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Рейтинг лекторів за кількістю курсів',
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                        },
+                                    }],
+                                },
+                            },
+                        });
+                    </script>
+                </div>
+
             </div>
         </section><!-- End Gallery Section -->
         <!-- ======= Testimonials Section ======= -->
