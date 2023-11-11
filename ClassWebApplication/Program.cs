@@ -1,4 +1,5 @@
 using ClassWebApplication.Models;
+using ClassWebApplication.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(
 builder.Configuration.GetConnectionString("DefaultConnection")
 ));
-
+builder.Services.AddScoped<GoogleDriveService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
