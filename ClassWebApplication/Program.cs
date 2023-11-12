@@ -1,6 +1,7 @@
 using ClassWebApplication.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using ClassWebApplication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Configuration.GetConnectionString("DefaultConnection")
 
 builder.Services.AddSingleton<GoogleDriveService>();
 builder.Services.AddScoped<GoogleDriveService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
