@@ -12,10 +12,15 @@ namespace ClassWebApplication.Controllers
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<CoursesController> _logger; 
+        private readonly GoogleDriveService _googleDriveService;
 
-        public CoursesController(ApplicationDbContext context)
+
+        public CoursesController(ApplicationDbContext context, ILogger<CoursesController> logger, GoogleDriveService googleDriveService)
         {
             _context = context;
+            _logger = logger;
+            _googleDriveService = googleDriveService;
         }
 
         // GET: Courses
@@ -56,7 +61,7 @@ namespace ClassWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,MaterialLink,LectorCourses")] Course course, List<int> LectorCourses)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,MaterialLink,LectorCourses")] Course course, List<int> LectorCourses, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -67,6 +72,30 @@ namespace ClassWebApplication.Controllers
 
                 _context.Courses.Add(course);
                 await _context.SaveChangesAsync();
+
+                if (file != null && file.Length > 0)
+                {
+                    try
+                    {
+                        byte[] fileContent;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            file.CopyTo(memoryStream);
+                            fileContent = memoryStream.ToArray();
+                        }
+
+                        var fileId = _googleDriveService.UploadFile(file.FileName, fileContent);
+
+                        course.MaterialLink = "https://drive.google.com/file/d/" + fileId + "/view";
+                        course.MaterialFileIdentifier = fileId;
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"Error uploading file: {ex.Message}");
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -181,5 +210,21 @@ namespace ClassWebApplication.Controllers
         {
           return (_context.Courses?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public async Task<IActionResult> DownloadMaterial(string materialFileIdentifier)
+        {
+            var fileContent = await _googleDriveService.DownloadFile(materialFileIdentifier);
+
+            if (fileContent != null)
+            {
+                return File(fileContent, "application/octet-stream", "materials.pdf");
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
     }
 }

@@ -17,16 +17,13 @@ public class GoogleDriveService
     {
         _webHostEnvironment = webHostEnvironment;
 
-        // Ініціалізація _driveService - об'єкта служби Google Drive API
         _driveService = InitializeDriveService();
     }
 
     public string UploadFile(string fileName, byte[] fileContent)
     {
-        // Завантаження файлу на Google Drive
         var fileId = UploadFileToDrive(fileName, fileContent);
 
-        // Повертаємо ідентифікатор завантаженого файлу
         return fileId;
     }
 
@@ -39,7 +36,6 @@ public class GoogleDriveService
         var credential = GoogleCredential.FromFile(jsonPath)
             .CreateScoped(new[] { DriveService.Scope.Drive });
 
-        // Створення служби Google Drive API
         var driveService = new DriveService(new BaseClientService.Initializer()
         {
             HttpClientInitializer = credential,
@@ -63,6 +59,21 @@ public class GoogleDriveService
             request.Upload();
 
             return request.ResponseBody?.Id;
+        }
+    }
+
+    public async Task<byte[]> DownloadFile(string fileId)
+    {
+        try
+        {
+            var request = _driveService.Files.Get(fileId);
+            var stream = new MemoryStream();
+            await request.DownloadAsync(stream);
+            return stream.ToArray();
+        }
+        catch (Exception ex)
+        {
+            return null;
         }
     }
 }

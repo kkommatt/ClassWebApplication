@@ -22,6 +22,8 @@ namespace ClassWebApplication.Models
         [Url(ErrorMessage = "Неправильний формат")]
         public string MaterialLink { get; set; }
 
+        public string MaterialFileIdentifier { get; set; }
+
         public ICollection<StudentCourse> StudentCourses { get; set; }
         public ICollection<LectorCourse> LectorCourses { get; set; }
     }

@@ -28,6 +28,21 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.MaterialLink)
         </dd>
+        <dt class="col-sm-2">
+            Завантажені матеріали на Google Drive
+        </dt>
+        <dd class="col-sm-10">
+        @if (!string.IsNullOrEmpty(Model.MaterialFileIdentifier))
+        {
+            <a href="javascript:void(0);" onclick="downloadMaterial('@Model.MaterialFileIdentifier')">Завантажити матеріали</a>
+        }
+        else
+        {
+            <p>Немає матеріалів на Google Drive</p>
+        }
+    </dd>
+
+
     </dl>
     <h4>Студенти курсу</h4>
     <ul>
@@ -49,3 +64,11 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Змінити</a> |
     <a asp-action="Index">Повернутися</a>
 </div>
+
+        @section Scripts {
+    <script>
+        function downloadMaterial(materialFileIdentifier) {
+            window.location.href = '/Courses/DownloadMaterial?materialFileIdentifier=' + encodeURIComponent(materialFileIdentifier);
+        }
+    </script>
+        }
