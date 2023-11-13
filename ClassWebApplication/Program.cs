@@ -12,6 +12,7 @@ builder.Configuration.GetConnectionString("DefaultConnection")
 builder.Services.AddSingleton<GoogleDriveService>();
 builder.Services.AddScoped<GoogleDriveService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
