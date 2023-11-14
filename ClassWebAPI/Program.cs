@@ -1,5 +1,8 @@
 using ClassWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Nest;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(
 builder.Configuration.GetConnectionString("DefaultConnection")
 ));
+builder.Services.AddElasticsearch(Configuration.GetSection("ElasticsearchSettings"));
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
