@@ -3,7 +3,29 @@
 @{
     ViewData["Title"] = "Змінити";
 }
-
+<script>
+    $(function () {
+        $('#lectorAutocomplete').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Courses/GetLectorAutocompleteData',
+                    dataType: 'json',
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+            delay: 300,
+            select: function (event, ui) {
+                $('[name="LectorCourses"]').val(ui.item.value);
+            }
+        });
+    });
+</script>
 <h1>Змінити</h1>
 
 <h4>Курс</h4>
@@ -30,9 +52,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="LectorCourses" class="control-label">Лектори</label>
-                <select asp-for="LectorCourses" asp-items="@(new SelectList(ViewBag.Lectors, "Id", "FullName"))" class="form-control" multiple>
-                    <option disabled selected>-- Виберіть лектора --</option>
-                </select>
+                <input type="text" id="lectorAutocomplete" class="form-control" placeholder="Start typing to select a lector" />
+                <input type="hidden" asp-for="LectorCourses" />
                 <span asp-validation-for="LectorCourses" class="text-danger"></span>
             </div>
             <div class="form-group">

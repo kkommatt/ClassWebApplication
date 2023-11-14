@@ -225,6 +225,22 @@ namespace ClassWebApplication.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult GetLectorAutocompleteData(string term)
+        {
+            var autocompleteData = _context.Lectors
+                .Where(l => l.FullName.StartsWith(term))
+                .Select(l => new { label = l.FullName, value = l.Id })
+                .ToList();
 
+            return Json(autocompleteData);
+        }
+
+        [HttpPost]
+        public IActionResult GetAuto(string FullName, int Id)
+        {
+            ViewBag.Message = FullName + " " + Id;
+            return View();
+        }
     }
 }
